@@ -1,4 +1,4 @@
-🗽 NYC Night Safety Mapping Project
+#🗽 NYC Night Safety Mapping Project
 
 A student research initiative to map perceived safety in New York City at night.
 

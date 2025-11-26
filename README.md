@@ -1,68 +1,76 @@
-#🗽 NYC Night Safety Mapping Project
+# 🗽 NYC Night Safety Mapping Project
 
-A student research initiative to map perceived safety in New York City at night.
+*A student research initiative to map perceived safety in New York City at night.*
 
-🔗 View Live Project Here (Replace YOUR-USERNAME with your actual GitHub username)
+🔗 **Live Demo:** *(Replace `YOUR-USERNAME` with your GitHub username)*  
+`https://YOUR-USERNAME.github.io/nyc-night-safety-map/`
 
-📖 About The Project
+---
 
-This project is part of a school research assignment. The goal is to crowdsource data on locations in New York City that residents or visitors feel are unsafe during nighttime hours.
+## 📖 About The Project
+
+This project was developed as part of a school research assignment. Its purpose is to gather crowdsourced data on locations in New York City that residents or visitors feel are unsafe during nighttime hours.
 
 The data collected includes:
 
-Geolocation: Precise latitude and longitude of the incident/area.
+- **Geolocation:** Precise latitude and longitude  
+- **Safety Issues:** Poor lighting, isolation, harassment, etc.  
+- **Time of Day:** When the area feels most unsafe  
 
-Safety Issues: Poor lighting, isolation, harassment, etc.
+The aggregated data will help visualize safety patterns and highlight areas that may benefit from urban improvements such as better streetlights or increased patrol presence.
 
-Time: When the location feels most unsafe.
+---
 
-The aggregated data will be used to visualize safety patterns and identify areas that may need urban improvements (better streetlights, more patrols, etc.).
+## 🚀 Features
 
-🚀 Features
+- **Interactive Map** built with Leaflet.js and OpenStreetMap  
+- **Pin Dropping** to mark exact unsafe locations  
+- **Mobile Responsive** layout for smartphones and desktops  
+- **Automated Data Collection** using SheetMonkey → Google Sheets  
+- **Simple, clean UI** for fast data input  
 
-Interactive Map: Built with Leaflet.js and OpenStreetMap.
+---
 
-Pin Dropping: Users can click or drag to pinpoint exact locations.
+## 🛠️ Technologies Used
 
-Mobile Responsive: Works seamlessly on smartphones and desktops.
+- **HTML5 & CSS3** — structure + responsive design  
+- **JavaScript** — map logic & interactivity  
+- **Leaflet.js** — open-source interactive mapping  
+- **SheetMonkey** — serverless form submission backend  
+- **GitHub Pages** — free static hosting  
 
-Data Collection: connected to Google Sheets via SheetMonkey for analysis.
+---
 
-🛠️ Technologies Used
+## 📊 How It Works
 
-HTML5 & CSS3: For structure and modern, responsive design.
+1. **Select Location:**  
+   User clicks on the map to drop a red marker at a specific spot.
 
-JavaScript: For map logic and interactivity.
+2. **Coordinates Captured Automatically:**  
+   Latitude & Longitude are filled in by the application.
 
-Leaflet.js: Open-source JavaScript library for mobile-friendly interactive maps.
+3. **Choose Safety Issue:**  
+   User selects the unsafe condition from a dropdown menu.
 
-SheetMonkey: Backend service to handle form submissions without a server.
+4. **Submit Data:**  
+   The information is sent securely to a research database (Google Sheets).
 
-GitHub Pages: For hosting the application.
+---
 
-📊 How It Works
+## ⚠️ Disclaimer
 
-Select Location: The user clicks on the map to place a red marker.
+This project is strictly for **educational and research purposes**.  
+It is **not** affiliated with the NYPD, city government, or emergency services.
 
-Coordinates: The application automatically captures the Latitude and Longitude.
+🚨 **In case of an actual emergency, call 911 immediately.**
 
-Details: The user selects the type of safety issue from a dropdown menu.
+---
 
-Submit: Data is sent securely to a research database (Google Sheets).
+## 📄 License & Credits
 
-⚠️ Disclaimer
+- Map data © OpenStreetMap contributors  
+- Map tiles by CartoDB  
+- UI & icon inspiration from modern web standards  
+- Created by **[Your Name]** for **[School Name / Class Name]**
 
-This is a student project for educational and research purposes only.
-This form is not connected to the NYPD or emergency services.
-
-🚨 In case of an emergency, please dial 911 immediately.
-
-📄 License & Credits
-
-Map data © OpenStreetMap contributors.
-
-Map tiles by CartoDB.
-
-Icons and UI inspired by modern web standards.
-
-Created by [Your Name] for [School Name/Class Name].
+---

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NYC Safety Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb; /* Moderní modrá */
+            --accent-color: #1e40af;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+        }
+
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); margin: 0; padding: 0; color: var(--text-main); -webkit-font-smoothing: antialiased; }
+        
+        /* Layout */
+        .header { background: white; padding: 15px 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); text-align: center; position: sticky; top: 0; z-index: 1000; }
+        .header h1 { margin: 0; font-size: 1.25rem; color: var(--text-main); }
+        .header p { margin: 5px 0 0; font-size: 0.85rem; color: var(--text-muted); }
+
+        .container { max-width: 700px; margin: 20px auto; padding: 0 15px 40px; }
+
+        /* Mapa - Větší a hezčí */
+        .map-wrapper { position: relative; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 4px solid white; }
+        #map { height: 500px; width: 100%; z-index: 1; }
+        
+        /* Na mobilu ať je mapa přes půl displeje */
+        @media (max-width: 600px) {
+            #map { height: 50vh; min-height: 350px; }
+            .container { margin: 10px auto; }
+        }
+
+        /* Formulář */
+        .form-card { background: var(--card-bg); border-radius: 16px; padding: 25px; margin-top: -20px; position: relative; z-index: 10; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        
+        label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; margin-top: 20px; color: var(--text-main); }
+        .first-label { margin-top: 0; }
+
+        /* Inputy */
+        input, select, textarea { width: 100%; padding: 12px 15px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 1rem; box-sizing: border-box; transition: border-color 0.2s; font-family: inherit; background: #f9fafb; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary-color); background: white; }
+        
+        /* Styl pro read-only souřadnice */
+        .coords-row { display: flex; gap: 10px; }
+        .coords-group { flex: 1; }
+        .coords-group input { background-color: #f3f4f6; color: var(--text-muted); font-size: 0.9rem; font-family: monospace; cursor: default; }
+        .coords-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 500; }
+
+        /* Tlačítko */
+        button[type="submit"] { width: 100%; background-color: var(--primary-color); color: white; border: none; padding: 16px; font-size: 1.1rem; font-weight: 700; border-radius: 10px; cursor: pointer; margin-top: 30px; box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3); transition: transform 0.1s, background-color 0.2s; }
+        button[type="submit"]:hover { background-color: var(--accent-color); }
+        button[type="submit"]:active { transform: scale(0.98); }
+
+        /* Instrukce nad mapou */
+        .map-overlay-instruction { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.9); padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; color: var(--text-main); box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 500; pointer-events: none; }
+
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>NYC Night Safety Project</h1>
+    <p>Student Research Survey</p>
+</div>
+
+<div class="container">
+    
+    <div class="map-wrapper">
+        <div class="map-overlay-instruction">👇 Click or drag map to pin location</div>
+        <div id="map"></div>
+    </div>
+
+    <div class="form-card">
+        
+        <form action="https://api.sheetmonkey.io/form/egxARLniJ1wHnChJ9LybDY" method="POST">
+            
+            <label class="first-label">Selected Location</label>
+            <div class="coords-row">
+                <div class="coords-group">
+                    <div class="coords-label">Latitude</div>
+                    <input type="text" id="lat" name="latitude" readonly placeholder="...">
+                </div>
+                <div class="coords-group">
+                    <div class="coords-label">Longitude</div>
+                    <input type="text" id="lng" name="longitude" readonly placeholder="...">
+                </div>
+            </div>
+
+            <label>What makes this place unsafe?</label>
+            <select name="issue" required>
+                <option value="" disabled selected>Select the main issue...</option>
+                <option value="No Lights">Too Dark / No Lights</option>
+                <option value="Isolated">Desolate / No People around</option>
+                <option value="Harassment">Verbal Harassment</option>
+                <option value="Drug Activity">Drug Activity</option>
+                <option value="Physical Threat">Physical Danger / Assault</option>
+                <option value="Traffic">Dangerous Traffic / Crossing</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label>Additional Details (Optional)</label>
+            <textarea name="details" rows="3" placeholder="E.g., It happens mostly after 11 PM..."></textarea>
+
+            <button type="submit">Submit Report</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    // Nastavení mapy (NYC střed)
+    var map = L.map('map', {
+        center: [40.730610, -73.935242], // Trochu lepší střed pro zobrazení boroughs
+        zoom: 11,
+        zoomControl: false // Skryjeme výchozí ovládání zoomu pro čistší vzhled
+    });
+
+    // Přidání zoom tlačítek do pravého dolního rohu (lépe dostupné palcem)
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+    // Moderní mapový podklad (CartoDB Voyager - vypadá velmi čistě)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap & CartoDB'
+    }).addTo(map);
+
+    var marker;
+
+    // Funkce pro aktualizaci inputů
+    function updateInputs(lat, lng) {
+        document.getElementById('lat').value = lat.toFixed(6);
+        document.getElementById('lng').value = lng.toFixed(6);
+    }
+
+    // Kliknutí do mapy
+    map.on('click', function(e){
+        if (marker) {
+            marker.setLatLng(e.latlng);
+        } else {
+            marker = L.marker(e.latlng, {draggable: true}).addTo(map);
+            // Když uživatel posune existující špendlík
+            marker.on('dragend', function(event){
+                var position = event.target.getLatLng();
+                updateInputs(position.lat, position.lng);
+            });
+        }
+        updateInputs(e.latlng.lat, e.latlng.lng);
+    });
+
+</script>
+
+</body>
+</html>
